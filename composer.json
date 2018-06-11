@@ -1,5 +1,6 @@
 {
 	"name" : "robert/form",
+	"license" : "MIT",
 	"require" : {
 		"php" : ">=7.1"
 	},

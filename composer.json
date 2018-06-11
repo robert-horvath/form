@@ -1,0 +1,12 @@
+{
+	"name" : "robert/form",
+	"require" : {
+		"php" : ">=7.1"
+	},
+	"license" : "MIT",
+	"autoload" : {
+		"psr-4" : {
+			"RHo\\Form\\" : "src/"
+		}
+	}
+}

@@ -3,7 +3,6 @@ language: php
 php:
   - '7.1'
   - '7.2'
-  - nightly
 
 before_install:
   - echo | pecl install channel://pecl.php.net/yaml-2.0.0

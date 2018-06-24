@@ -6,6 +6,7 @@ php:
 
 before_install:
   - travis_retry composer install --no-dev --no-interaction --prefer-source
+  - travis_retry composer dump-autoload
   - cat vendor/composer/autoload_psr4.php
 
 after_success:

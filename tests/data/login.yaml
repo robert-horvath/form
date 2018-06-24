@@ -1,0 +1,72 @@
+valid:
+- form:
+    email: email@address.com
+    psswrd: Secret123!
+  err:
+    email: null
+    psswrd: null
+  php:
+    email: email@address.com
+    password: Secret123!
+- form:
+    email: robert@my-email.com
+    psswrd: 12Sdf!4
+  err:
+    email: null
+    psswrd: null
+  php:
+    email: robert@my-email.com
+    password: 12Sdf!4
+invalid:
+  Empty Form:
+    form: [
+      ]
+    err:
+      email:
+        code: 1
+        txt: Mandatory value missing
+      psswrd:
+        code: 1
+        txt: Mandatory value missing
+  Password input missing:
+    form:
+      email: a@b.com
+    err:
+      email: null
+      psswrd:
+        code: 1
+        txt: Mandatory value missing
+  Email input missing:
+    form:
+      psswrd: PassWord12%
+    err:
+      psswrd: null
+      email:
+        code: 1
+        txt: Mandatory value missing
+  Wrong email:
+    form:
+      email: email
+      psswrd: PassWord12%
+    err:
+      psswrd: null
+      email:
+        code: 2
+        txt: Invalid e-mail address
+  Too short password:
+    form:
+      email: robert@my-email.com
+      psswrd: 12S!
+    err:
+      email: null
+      psswrd:
+        code: 4
+        txt: Password too short < 5
+  Form with extra field:
+    form:
+      email: email@address.com
+      psswrd: Secret123!
+      extra-field: true
+    err:
+      email: null
+      psswrd: null

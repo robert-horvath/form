@@ -1,12 +1,21 @@
 {
 	"name" : "robert/form",
-	"require" : {
-		"php" : ">=7.1"
-	},
 	"license" : "MIT",
+	"require" : {
+		"php" : ">=7.1",
+		"robert/ui" : "^0.1"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "^7"
+	},
 	"autoload" : {
 		"psr-4" : {
 			"RHo\\Form\\" : "src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"RHo\\Form\\Test\\" : "tests/"
 		}
 	}
 }

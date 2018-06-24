@@ -5,6 +5,7 @@ php:
   - nightly
 
 before_install:
+  - pecl install yaml-2.0.0
   - travis_retry composer install --no-dev --no-interaction --prefer-source
   - travis_retry composer dump-autoload
   - cat vendor/composer/autoload_psr4.php

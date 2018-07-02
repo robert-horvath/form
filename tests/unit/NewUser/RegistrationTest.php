@@ -4,11 +4,11 @@ namespace RHo\Form\NewUser;
 
 use RHo\Form\AbstractTestCase;
 
-final class RegisterTest extends AbstractTestCase
+final class RegistrationTest extends AbstractTestCase
 {
 
     protected function ymlFileName(): string
     {
-        return 'new-user/register.yml';
+        return 'new-user/registration.yml';
     }
 }

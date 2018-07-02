@@ -6,10 +6,11 @@ use RHo\Form\AbstractForm;
 use RHo\UI\ {
     Name,
     Email,
+    SemVer,
     Password
 };
 
-class Register extends AbstractForm
+class Registration extends AbstractForm
 {
 
     public function __construct(array $ui)
@@ -23,6 +24,9 @@ class Register extends AbstractForm
             },
             'psswrd' => function ($x) {
                 return Password::mandatory($x);
+            },
+            'eula' => function ($x) {
+                return SemVer::mandatory($x);
             }
         ]);
     }
@@ -40,5 +44,10 @@ class Register extends AbstractForm
     public function password(): string
     {
         return $this->in['psswrd'];
+    }
+
+    public function eulaVersion(): string
+    {
+        return $this->in['eula'];
     }
 }

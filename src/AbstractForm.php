@@ -18,7 +18,7 @@ abstract class AbstractForm implements \JsonSerializable
         $this->valid = $this->validateFields($ui, $fields);
     }
 
-    private function popFieldFromUIArray(array &$ui, string $key): ?string
+    private function popFieldFromUIArray(array &$ui, string $key)
     {
         $retVal = $ui[$key] ?? NULL;
         unset($ui[$key]);

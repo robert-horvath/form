@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace RHo\Form\Session;
+namespace RHo\Form\NewUser;
 
 use RHo\Form\AbstractForm;
 use RHo\UI\ {
@@ -8,13 +8,13 @@ use RHo\UI\ {
     Authorization
 };
 
-class Logout extends AbstractForm
+class Activation extends AbstractForm
 {
 
     public function __construct(array $ui)
     {
         parent::__construct($ui, [
-            'session' => function ($x) {
+            'userid' => function ($x) {
                 return AlphaNumToken::mandatory($x, 32);
             },
             'authorization' => function ($x) {
@@ -23,9 +23,9 @@ class Logout extends AbstractForm
         ]);
     }
 
-    public function sessionID(): string
+    public function userID(): string
     {
-        return $this->in['session'];
+        return $this->in['userid'];
     }
 
     public function token(): string

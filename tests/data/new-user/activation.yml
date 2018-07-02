@@ -1,0 +1,46 @@
+class: RHo\Form\NewUser\Activation
+# ********************** VALID DATA **********************
+valid:
+- form:
+    userid: dsGX1MBybj26QMKsulheeTy504dVPIvk
+    authorization: Bearer QNRimOexIjbL4u0pJvrpGcToScaxDEWS6EloLuL5lCZppDo9SHxoAuEHYDSd99YH~Fri.15-Apr-2011_22/41/08.729401_GMT
+  err:
+    userid: null
+    authorization: null
+  php:
+    userID: s:32:"dsGX1MBybj26QMKsulheeTy504dVPIvk";
+    token: s:64:"QNRimOexIjbL4u0pJvrpGcToScaxDEWS6EloLuL5lCZppDo9SHxoAuEHYDSd99YH";
+    createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2011-04-15 22:41:08.729401";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+# ********************* INVALID DATA *********************
+invalid:
+  Null Form:
+    form:
+      userid: null
+      authorization: null
+    err:
+      userid:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      authorization:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+  Empty Form:
+    form: []
+    err:
+      userid:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      authorization:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+  Invalid UI:
+    form:
+      userid: rfNA6SYm4WwAYv7naCkV%62m8roF7dUv
+      authorization: Bearer R1kczjVLvA1DIV3rFfNhuvC$VkOW1REIxsNNK5Pq4MuPHDtfAxMVHVyUNtuvOxgF~Sun.29-Nov-2009_05/00/04.000000_GMT
+    err:
+      userid:
+        code: RHo\UI\Exception::VALIDATION_FAILED
+        txt: Pattern does not match given subject
+      authorization:
+        code: RHo\UI\Exception::VALIDATION_FAILED
+        txt: Pattern does not match given subject

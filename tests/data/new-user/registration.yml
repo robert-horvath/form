@@ -1,18 +1,21 @@
-class: RHo\Form\NewUser\Register
+class: RHo\Form\NewUser\Registration
 # ********************** VALID DATA **********************
 valid:
 - form:
     email: email@address.com
     firstname: Róbert
     psswrd: Secret123!
+    eula: 1.0.0
   err:
     firstname: null
     email: null
     psswrd: null
+    eula: null
   php:
     email: s:17:"email@address.com";
     password: s:10:"Secret123!";
     firstName: s:7:"Róbert";
+    eulaVersion: s:5:"1.0.0";
 # ********************* INVALID DATA *********************
 invalid:
   Null Form:
@@ -20,7 +23,11 @@ invalid:
       email: null
       firstname: null
       psswrd: null
+      eula: null
     err:
+      eula:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
       email:
         code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
@@ -36,6 +43,9 @@ invalid:
       email:
         code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
+      eula:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
       psswrd:
         code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
@@ -47,6 +57,7 @@ invalid:
       email: a@b
       firstname: Tamá$
       psswrd: secret-password
+      eula: 2.100
     err:
       email:
         code: RHo\UI\Exception::STR_TOO_SHORT
@@ -57,4 +68,6 @@ invalid:
       firstname:
         code: RHo\UI\Exception::VALIDATION_FAILED
         txt: Pattern does not match given subject
-        
+      eula:
+        code: RHo\UI\Exception::INVALID_DATA_TYPE
+        txt: <string> data type required

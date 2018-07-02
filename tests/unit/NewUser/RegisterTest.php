@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
-namespace RHo\Form\Session;
+namespace RHo\Form\NewUser;
 
 use RHo\Form\AbstractTestCase;
 
-final class LogoutTest extends AbstractTestCase
+final class RegisterTest extends AbstractTestCase
 {
 
     protected function ymlFileName(): string
     {
-        return 'session/logout.yml';
+        return 'new-user/register.yml';
     }
 }

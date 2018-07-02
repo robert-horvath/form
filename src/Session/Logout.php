@@ -23,13 +23,18 @@ class Logout extends AbstractForm
         ]);
     }
 
-    public function auth(): Authorization
-    {
-        return $this->in['authorization'];
-    }
-
     public function sessionID(): string
     {
         return $this->in['session'];
+    }
+
+    public function token(): string
+    {
+        return $this->in['authorization']->token;
+    }
+
+    public function createdAt(): \DateTime
+    {
+        return $this->in['authorization']->expiresAt;
     }
 }

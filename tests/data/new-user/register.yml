@@ -1,0 +1,60 @@
+class: RHo\Form\NewUser\Register
+# ********************** VALID DATA **********************
+valid:
+- form:
+    email: email@address.com
+    firstname: Róbert
+    psswrd: Secret123!
+  err:
+    firstname: null
+    email: null
+    psswrd: null
+  php:
+    email: s:17:"email@address.com";
+    password: s:10:"Secret123!";
+    firstName: s:7:"Róbert";
+# ********************* INVALID DATA *********************
+invalid:
+  Null Form:
+    form:
+      email: null
+      firstname: null
+      psswrd: null
+    err:
+      email:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      psswrd:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      firstname:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+  Empty Form:
+    form: []
+    err:
+      email:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      psswrd:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      firstname:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+  Invalid UI:
+    form:
+      email: a@b
+      firstname: Tamá$
+      psswrd: secret-password
+    err:
+      email:
+        code: RHo\UI\Exception::STR_TOO_SHORT
+        txt: Length has to be greater than or equal to 5
+      psswrd:
+        code: RHo\UI\Exception::VALIDATION_FAILED
+        txt: Pattern does not match given subject
+      firstname:
+        code: RHo\UI\Exception::VALIDATION_FAILED
+        txt: Pattern does not match given subject
+        

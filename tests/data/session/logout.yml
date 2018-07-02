@@ -1,3 +1,5 @@
+class: RHo\Form\Session\Logout
+# *********** VALID DATA ***********
 valid:
 - form:
     session: CiKNNxaUicGxkewwvFkjKloqhERIVbxZ
@@ -6,10 +8,9 @@ valid:
     session: null
     authorization: null
   php:
-    sessionID: CiKNNxaUicGxkewwvFkjKloqhERIVbxZ
-    auth:
-      token: zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn
-      CreatedAt: O:8:"DateTime":3:{s:4:"date";s:26:"2018-05-23 14:18:57.352896";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+    sessionID: s:32:"CiKNNxaUicGxkewwvFkjKloqhERIVbxZ";
+    token: s:64:"zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn";
+    createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2018-05-23 14:18:57.352896";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
 - form:
     session: jndoj3pR5I51fAfASQEEo6xF4HiYMhjd
     authorization: Bearer     6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp~Sat.01-Jan-2000_23/59/58.123456_GMT
@@ -17,10 +18,10 @@ valid:
     session: null
     authorization: null
   php:
-    sessionID: jndoj3pR5I51fAfASQEEo6xF4HiYMhjd
-    auth:
-      token: 6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp
-      CreatedAt: O:8:"DateTime":3:{s:4:"date";s:26:"2000-01-01 23:59:58.123456";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+    sessionID: s:32:"jndoj3pR5I51fAfASQEEo6xF4HiYMhjd";
+    token: s:64:"6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp";
+    createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2000-01-01 23:59:58.123456";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+# ********** INVALID DATA **********
 invalid:
   Null Form:
     form:
@@ -28,20 +29,19 @@ invalid:
       authorization: null
     err:
       session:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
       authorization:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
   Empty Form:
-    form: [
-      ]
+    form: []
     err:
       session:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
       authorization:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
   Invalid session and auth:
     form:
@@ -49,10 +49,10 @@ invalid:
       authorization: Bearer  hgcvDFG43t5g=
     err:
       session:
-        code: 4
-        txt: Token length != 32
+        code: RHo\UI\Exception::STR_TOO_SHORT
+        txt: Length has to be greater than or equal to 32
       authorization:
-        code: 2
+        code: RHo\UI\Exception::VALIDATION_FAILED
         txt: Pattern does not match given subject
   Invalid authorization 1:
     form:
@@ -61,5 +61,5 @@ invalid:
     err:
       session: null
       authorization:
-        code: 4
-        txt: Token length != 64
+        code: RHo\UI\Exception::STR_TOO_SHORT
+        txt: Length has to be greater than or equal to 64

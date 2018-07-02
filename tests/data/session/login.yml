@@ -1,3 +1,5 @@
+class: RHo\Form\Session\Login
+# ********************** VALID DATA **********************
 valid:
 - form:
     email: email@address.com
@@ -6,8 +8,8 @@ valid:
     email: null
     psswrd: null
   php:
-    email: email@address.com
-    password: Secret123!
+    email: s:17:"email@address.com";
+    password: s:10:"Secret123!";
 - form:
     email: robert@my-email.com
     psswrd: 12Sdf!4
@@ -15,18 +17,29 @@ valid:
     email: null
     psswrd: null
   php:
-    email: robert@my-email.com
-    password: 12Sdf!4
+    email: s:19:"robert@my-email.com";
+    password: s:7:"12Sdf!4";
+# ********************* INVALID DATA *********************
 invalid:
-  Empty Form:
-    form: [
-      ]
+  Null Form:
+    form:
+      email: null
+      psswrd: null
     err:
       email:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
       psswrd:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+  Empty Form:
+    form: []
+    err:
+      email:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+      psswrd:
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
   Password input missing:
     form:
@@ -34,7 +47,7 @@ invalid:
     err:
       email: null
       psswrd:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
   Email input missing:
     form:
@@ -42,7 +55,7 @@ invalid:
     err:
       psswrd: null
       email:
-        code: 1
+        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
   Wrong email:
     form:
@@ -51,7 +64,7 @@ invalid:
     err:
       psswrd: null
       email:
-        code: 2
+        code: RHo\UI\Exception::VALIDATION_FAILED
         txt: Invalid e-mail address
   Too short password:
     form:
@@ -60,8 +73,8 @@ invalid:
     err:
       email: null
       psswrd:
-        code: 4
-        txt: Password too short < 5
+        code: RHo\UI\Exception::STR_TOO_SHORT
+        txt: Length has to be greater than or equal to 5
   Form with extra field:
     form:
       email: email@address.com

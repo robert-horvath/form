@@ -13,9 +13,13 @@ abstract class AbstractForm implements \JsonSerializable
     /** @var bool */
     protected $valid;
 
+    /** @var bool */
+    protected $extraFields;
+
     public function __construct(array $ui, array $fields)
     {
         $this->valid = $this->validateFields($ui, $fields);
+        $this->extraFields = ! empty($ui);
     }
 
     private function popFieldFromUIArray(array &$ui, string $key)
@@ -25,7 +29,7 @@ abstract class AbstractForm implements \JsonSerializable
         return $retVal;
     }
 
-    private function validateFields(array $ui, array $fields): bool
+    private function validateFields(array &$ui, array $fields): bool
     {
         $valid = TRUE;
         foreach ($fields as $key => $f) {
@@ -36,7 +40,12 @@ abstract class AbstractForm implements \JsonSerializable
                 $valid = FALSE;
             }
         }
-        return $valid && empty($ui);
+        return $valid;
+    }
+
+    public function hasExtraFields(): bool
+    {
+        return $this->extraFields;
     }
 
     public function isValid(): bool

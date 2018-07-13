@@ -23,11 +23,10 @@ function foo(array $ui)
     $form = new Form\NewUser\Registration($ui);
     echo (sprintf("Is valid: %s\n", $form->isValid() ? 'Yes' : 'No'));
     echo (sprintf("Has extra field(s): %s\n", $form->hasExtraFields() ? 'Yes' : 'No'));
+    echo json_encode($form, JSON_PRETTY_PRINT);
     
     if ($form->isValid())
         var_dump($form->firstName(), $form->email(), $form->password(), $form->eulaVersion());
-    else
-        echo json_encode($form, JSON_PRETTY_PRINT);
 }
 
 }
@@ -36,10 +35,9 @@ namespace {
     
     
     RHo\foo([
-        'email' => 'email.addr.es',
-        'psswrd' => NULL,
-        'firstname' => 'Peter?',
-        'extra' => []
+        'email' => 'email@addr.es',
+        'psswrd' => 'Secret1',
+        'eula' => '1.0.0',
+        'firstname' => 'Peter'
     ]);
-    
 }

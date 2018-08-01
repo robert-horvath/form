@@ -21,9 +21,7 @@
 		"psr-4" : {
 			"RHoTest\\Form\\" : [
 				"tests/",
-				"tests/src/",
-				"tests/unit/",
-				"tests/integration/"
+				"tests/src/"
 			]
 		}
 	}

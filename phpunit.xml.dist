@@ -11,7 +11,7 @@
 	convertWarningsToExceptions="true"
 	forceCoversAnnotation="false" 
 	printerClass="PHPUnit\TextUI\ResultPrinter"
-	processIsolation="true" 
+	processIsolation="false" 
 	stopOnError="false" 
 	stopOnFailure="false"
 	stopOnIncomplete="false" 
@@ -26,10 +26,10 @@
 
 	<testsuites>
 		<testsuite name="Integration">
-			<directory>tests/integration</directory>
+			<directory>tests</directory>
 		</testsuite>
 		<testsuite name="Unit">
-			<directory>tests/unit</directory>
+			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
 

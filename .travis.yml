@@ -5,16 +5,15 @@ php:
 
 before_install:
   - echo | pecl install channel://pecl.php.net/yaml-2.0.0
-  - travis_retry composer install --no-dev --no-interaction --prefer-source
+  - travis_retry composer install --no-interaction --prefer-source
   - travis_retry composer dump-autoload
   - cat vendor/composer/autoload_psr4.php
 
 before_script:
-  - ./build
+  - make build
 
 script:
-  - phpunit --testsuite Unit
-  - phpunit --testsuite Integration
+  - make test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

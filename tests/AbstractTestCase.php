@@ -2,28 +2,31 @@
 declare(strict_types = 1);
 namespace RHoTest\Form;
 
+ini_set('xdebug.var_display_max_depth', '10');
+
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
-use RHoTest;
-ini_set('xdebug.var_display_max_depth', '10');
 
 abstract class AbstractTestCase extends TestCase
 {
 
-    /** @var TestTemplate */
-    private $tt;
+    /** @var TemplateWithExamples */
+    private $tmpl;
 
     private function tmpl()
     {
-        if ($this->tt === NULL)
-            $this->tt = TestTemplate::buildFromYaml(__DIR__ . '/data/' . static::$yamlFile);
-        return $this->tt;
+        if ($this->tmpl === NULL)
+            $this->tmpl = TemplateWithExamples::buildFromYaml(__DIR__ . '/data/' . static::$yamlFile);
+        return $this->tmpl;
     }
 
     public function formDataProvider()
     {
         return $this->tmpl()->iterator();
     }
+
+    protected function setUp()
+    {}
 
     protected function tearDown()
     {
@@ -36,19 +39,20 @@ abstract class AbstractTestCase extends TestCase
     public function testForms(array $in, array $out, array $err, array $mock, bool $isValid, bool $hasUnknownUI): void
     {
         $className = $this->tmpl()->class();
-        if (is_subclass_of($this, RHoTest\Form\AbstractUnitTestCase::class))
+        if (count(array_intersect([
+            '--testsuite',
+            'Unit'
+        ], $_SERVER['argv'])) == 2)
             $this->createMockeryMocks($mock, $err);
         $form = new $className($in);
-        
-        // var_dump($form->jsonSerialize());
         
         $this->assertEquals($err, $form->jsonSerialize(), "### Form errors don't match");
         $this->assertJsonStringEqualsJsonString(json_encode($err), json_encode($form), "### JSON form errors don't match");
         $this->assertSame($isValid, $form->isValid(), '### Invalid form');
         $this->assertSame($hasUnknownUI, $form->hasUnknownFields(), '### Form has unknown fields');
         
-        foreach ($this->tt->methods() as $func) {
-            $field = $this->tt->fieldOfMethod($func);
+        foreach ($this->tmpl()->methods() as $func) {
+            $field = $this->tmpl()->fieldOfMethod($func);
             $value = $out[$func];
             if ($err[$field] === NULL) {
                 if (is_object($value))
@@ -56,14 +60,15 @@ abstract class AbstractTestCase extends TestCase
                 else
                     $this->assertSame($value, $form->$func(), '### Invalid form data');
             } else
-                $this->checkFormException($form, $func, $field);
+                $this->checkFormExceptionThrown($form, $func, $field);
         }
     }
 
-    private function checkFormException($form, $func, $field)
+    private function checkFormExceptionThrown($form, $func, $field)
     {
         try {
             $form->$func();
+            $this->assertTrue(false, 'Must not execute this line');
         } catch (\LogicException $e) {
             $this->assertSame("Form field <$field> invalid.", $e->getMessage());
             $this->assertSame(0, $e->getCode());
@@ -72,8 +77,8 @@ abstract class AbstractTestCase extends TestCase
 
     private function createMockeryMocks(array $mock, array $err)
     {
-        foreach ($this->tt->fields() as $field) {
-            $externalMock = m::mock('overload:' . $this->tt->classOfField($field));
+        foreach ($this->tmpl()->fields() as $field) {
+            $externalMock = m::mock('overload:' . $this->tmpl()->classOfField($field));
             if ($err[$field] === NULL)
                 $externalMock->shouldReceive('mandatory')
                     ->once()

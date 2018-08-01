@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-rm -rf src/built
-./builder/build.py
-mv builder/src src/built

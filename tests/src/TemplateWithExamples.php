@@ -3,10 +3,10 @@ declare(strict_types = 1);
 namespace RHoTest\Form;
 
 /**
- * The class reads the yaml configuration file to provide input data
- * and expected results for unit and integration tests.
+ * The class reads the yaml configuration file to provide example 
+ * input data and expected results for unit and integration tests.
  */
-class TestTemplate extends Template
+class TemplateWithExamples extends Template
 {
 
     /** @var array */

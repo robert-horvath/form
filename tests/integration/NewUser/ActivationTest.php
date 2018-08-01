@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace RHoTest\Form\NewUser;
 
-use RHoTest\Form\AbstractUnitTestCase;
+use RHoTest\Form\AbstractIntegrationTestCase;
 
-final class ActivationTest extends AbstractUnitTestCase
+final class ActivationTest extends AbstractIntegrationTestCase
 {
 
     protected static $yamlFile = 'new-user/activation.yml';

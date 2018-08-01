@@ -1,65 +1,63 @@
-class: RHo\Form\Session\Logout
-# *********** VALID DATA ***********
-valid:
-- form:
-    session: CiKNNxaUicGxkewwvFkjKloqhERIVbxZ
-    authorization: Bearer zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn~Wed.23-May-2018_14/18/57.352896_GMT
-  err:
-    session: null
-    authorization: null
-  php:
-    sessionID: s:32:"CiKNNxaUicGxkewwvFkjKloqhERIVbxZ";
-    token: s:64:"zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn";
-    createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2018-05-23 14:18:57.352896";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
-- form:
-    session: jndoj3pR5I51fAfASQEEo6xF4HiYMhjd
-    authorization: Bearer     6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp~Sat.01-Jan-2000_23/59/58.123456_GMT
-  err:
-    session: null
-    authorization: null
-  php:
-    sessionID: s:32:"jndoj3pR5I51fAfASQEEo6xF4HiYMhjd";
-    token: s:64:"6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp";
-    createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2000-01-01 23:59:58.123456";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
-# ********** INVALID DATA **********
-invalid:
-  Null Form:
-    form:
-      session: null
-      authorization: null
-    err:
+form: 
+  Session\Logout:
+    session:
+      AlphaNumToken:
+        - sessionID
+    authorization:
+      Authorization:
+        - token
+        - createdAt
+# =================================================================
+examples:
+  - in:
+      session: CiKNNxaUicGxkewwvFkjKloqhERIVbxZ
+      authorization: Bearer zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn~Wed.23-May-2018_14/18/57.352896_GMT
+    mock:
+      session: s:32:"CiKNNxaUicGxkewwvFkjKloqhERIVbxZ";
+      authorization: O:8:"stdClass":2:{s:5:"token";s:64:"zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn";s:8:"dateTime";O:8:"DateTime":3:{s:4:"date";s:26:"2018-05-23 14:18:57.352896";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}}
+    out:
+      sessionID: s:32:"CiKNNxaUicGxkewwvFkjKloqhERIVbxZ";
+      token: s:64:"zotgdEfAlqSHTB583bOzZzvhXQehAokXxaYDzpFDzxlELBYXOEIWltKRskWCLbQn";
+      createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2018-05-23 14:18:57.352896";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+# -----------------------------------------------------------------
+  - in:
+      session: jndoj3pR5I51fAfASQEEo6xF4HiYMhjd
+      authorization: Bearer     6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp~Sat.01-Jan-2000_23/59/58.123456_GMT
+    mock:
+      session: s:32:"jndoj3pR5I51fAfASQEEo6xF4HiYMhjd";
+      authorization: O:8:"stdClass":2:{s:5:"token";s:64:"6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp";s:8:"dateTime";O:8:"DateTime":3:{s:4:"date";s:26:"2000-01-01 23:59:58.123456";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}}
+    out:
+      sessionID: s:32:"jndoj3pR5I51fAfASQEEo6xF4HiYMhjd";
+      token: s:64:"6xfsZLEkBDLSVOiMzm6PebJ0sxDupvSfVJeOEcNTo9BpEFkzCNfA0zerElEIOTUp";
+      createdAt: O:8:"DateTime":3:{s:4:"date";s:26:"2000-01-01 23:59:58.123456";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"GMT";}
+# -----------------------------------------------------------------
+  - err:
+    - code: MANDATORY_VALUE_MISSING
+      txt: Mandatory value missing
+# -----------------------------------------------------------------
+  - err:
       session:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=32
       authorization:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-  Empty Form:
-    form: []
-    err:
-      session:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-      authorization:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-  Invalid session and auth:
-    form:
+        code: VALIDATION_FAILED
+        txt: Pattern does not match given subject
+    mock:
+      session: s:31:"aPx6rXEyNuWjnij8FwgC7Q3IOV2qR1Z";
+      authorization: s:21:"Bearer  hgcvDFG43t5g=";
+    in:
       session: aPx6rXEyNuWjnij8FwgC7Q3IOV2qR1Z
       authorization: Bearer  hgcvDFG43t5g=
+# -----------------------------------------------------------------
+  - mock:
+      session: s:32:"vilmi28108cVy5CTCof6vtS6G0tEJ9nd";
+      authorization: s:106:"Bearer neX0OAGy9TKlvn6DPC6gOOeMleloHiBJUXicMmYHIQsuoj2L3tisjqSMcOHZcEn~XXX.91-Dec-2010_23/59/58.123456_ABC";
     err:
-      session:
-        code: RHo\UI\Exception::STR_TOO_SHORT
-        txt: Length has to be greater than or equal to 32
       authorization:
-        code: RHo\UI\Exception::VALIDATION_FAILED
-        txt: Pattern does not match given subject
-  Invalid authorization 1:
-    form:
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=64
+    out:
+      sessionID: s:32:"vilmi28108cVy5CTCof6vtS6G0tEJ9nd";
+    in:
       session: vilmi28108cVy5CTCof6vtS6G0tEJ9nd
-      authorization: Bearer neX0OAGy9TKlvn6DPC6gOOeMleloHiBJUXicMmYHIQsuoj2L3tisjqSMcOHZcEn~XXX.91-Dec-2010_23/59/58.123456_ABC
-    err:
-      session: null
-      authorization:
-        code: RHo\UI\Exception::STR_TOO_SHORT
-        txt: Length has to be greater than or equal to 64
+      authorization: Bearer neX0OAGy9TKlvn6DPC6gOOeMleloHiBJUXicMmYHIQsuoj2L3tisjqSMcOHZcEn~XXX.91-Dec-2010_23/59/58.123456_ABC      

@@ -9,5 +9,12 @@ before_install:
   - travis_retry composer dump-autoload
   - cat vendor/composer/autoload_psr4.php
 
+before_script:
+  - ./build
+
+script:
+  - phpunit --testsuite Unit
+  - phpunit --testsuite Integration
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)

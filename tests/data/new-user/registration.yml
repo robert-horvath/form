@@ -1,73 +1,111 @@
-class: RHo\Form\NewUser\Registration
-# ********************** VALID DATA **********************
-valid:
-- form:
-    email: email@address.com
-    firstname: Róbert
-    psswrd: Secret123!
-    eula: 1.0.0
-  err:
-    firstname: null
-    email: null
-    psswrd: null
-    eula: null
-  php:
-    email: s:17:"email@address.com";
-    password: s:10:"Secret123!";
-    firstName: s:7:"Róbert";
-    eulaVersion: s:5:"1.0.0";
-# ********************* INVALID DATA *********************
-invalid:
-  Null Form:
-    form:
-      email: null
-      firstname: null
-      psswrd: null
-      eula: null
+form: 
+  NewUser\Registration:
+    email:
+      Email:
+        - email
+    psswrd:
+      Password:
+        - password
+    eula:
+      SemVer:
+        - eulaVersion 
+    firstname:
+      Name:    
+        - firstName
+# =================================================================
+examples:
+  - in:
+      email: email@address.com
+      eula: 2.1.4
+    mock:
+      email: s:17:"email@address.com";
+      eula: s:5:"2.1.4";
     err:
-      eula:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-      email:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
       psswrd:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        code: MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
       firstname:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        code: MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
-  Empty Form:
-    form: []
+    out:
+      email: s:17:"email@address.com";
+      eulaVersion: s:5:"2.1.4";
+# -----------------------------------------------------------------
+  - in:
+      email: a@bc
+      eula: "1.3.2"
+      unknown-field: null
+      psswrd: PASSW0RD
+      firstname: F%$§!
     err:
       email:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-      eula:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=5
       psswrd:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-      firstname:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-  Invalid UI:
-    form:
-      email: a@b
-      firstname: Tamá$
-      psswrd: secret-password
-      eula: 2.100
-    err:
-      email:
-        code: RHo\UI\Exception::STR_TOO_SHORT
-        txt: Length has to be greater than or equal to 5
-      psswrd:
-        code: RHo\UI\Exception::VALIDATION_FAILED
+        code: VALIDATION_FAILED
         txt: Pattern does not match given subject
       firstname:
-        code: RHo\UI\Exception::VALIDATION_FAILED
+        code: VALIDATION_FAILED
         txt: Pattern does not match given subject
+    out:
+      eulaVersion: s:5:"1.3.2";
+    mock:
+      eula: s:5:"1.3.2";
+# -----------------------------------------------------------------
+  - in:
+      email: em@ail
+      firstname: A
+      psswrd: p1sd
+      eula: 10
+      unknown-field: null
+    err:
+      psswrd:
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=5
+      firstname:
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=2
       eula:
-        code: RHo\UI\Exception::INVALID_DATA_TYPE
+        code: INVALID_DATA_TYPE
         txt: <string> data type required
+      email:
+        code: VALIDATION_FAILED
+        txt: Invalid e-mail address
+# -----------------------------------------------------------------
+  - in:
+      unknown: null
+      email: email@addr.es
+      eula: 9.9.9
+      psswrd: pA$$w0rd
+      firstname: FirstnamE
+    out:
+      email: s:13:"email@addr.es";
+      eulaVersion: s:5:"9.9.9";
+      password: s:8:"pA$$w0rd";
+      firstName: s:9:"FirstnamE";
+    mock:
+      email: s:13:"email@addr.es";
+      eula: s:5:"9.9.9";
+      psswrd: s:8:"pA$$w0rd";
+      firstname: s:9:"FirstnamE";
+# -----------------------------------------------------------------
+  - err:
+      - code: MANDATORY_VALUE_MISSING
+        txt: Mandatory value missing
+# -----------------------------------------------------------------
+  - out:
+      email: s:17:"email@address.com";
+      firstName: s:7:"Róbert";
+      password: s:10:"Secret123!";
+      eulaVersion: s:5:"1.0.0";
+    mock:
+      email: s:17:"email@address.com";
+      firstname: s:7:"Róbert";
+      psswrd: s:10:"Secret123!";
+      eula: s:5:"1.0.0";
+    in:
+      email: email@address.com
+      firstname: Róbert
+      psswrd: Secret123!
+      eula: 1.0.0
+# -----------------------------------------------------------------

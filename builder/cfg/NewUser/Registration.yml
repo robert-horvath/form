@@ -1,0 +1,12 @@
+email:
+  Email:
+    email: string
+psswrd:
+  Password:
+    password: string
+eula:
+  SemVer:
+    eulaVersion: string
+firstname:
+  Name:
+    firstName: string

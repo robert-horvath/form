@@ -1,85 +1,94 @@
-class: RHo\Form\Session\Login
-# ********************** VALID DATA **********************
-valid:
-- form:
-    email: email@address.com
-    psswrd: Secret123!
-  err:
-    email: null
-    psswrd: null
-  php:
-    email: s:17:"email@address.com";
-    password: s:10:"Secret123!";
-- form:
-    email: robert@my-email.com
-    psswrd: 12Sdf!4
-  err:
-    email: null
-    psswrd: null
-  php:
-    email: s:19:"robert@my-email.com";
-    password: s:7:"12Sdf!4";
-# ********************* INVALID DATA *********************
-invalid:
-  Null Form:
-    form:
-      email: null
-      psswrd: null
-    err:
-      email:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+form: 
+  Session\Login:
+    email:
+      Email:
+        - email
+    psswrd:
+      Password:
+        - password
+# =================================================================
+examples:
+  - mock:
+      email: s:17:"email@address.com";
+      psswrd: s:10:"Secret123!";
+    out:
+      email: s:17:"email@address.com";
+      password: s:10:"Secret123!";
+    in:
+      email: email@address.com
+      psswrd: Secret123!      
+# -----------------------------------------------------------------
+  - mock:
+      email: s:19:"robert@my-email.com";
+      psswrd: s:7:"12Sdf!4";
+    in:
+      email: robert@my-email.com
+      psswrd: 12Sdf!4
+    out:
+      email: s:19:"robert@my-email.com";
+      password: s:7:"12Sdf!4";
+# -----------------------------------------------------------------
+  - in:
+      email: email@address.com
+      psswrd: SeCRet123!
+    mock:
+      email: s:17:"email@address.com";
+      psswrd: s:10:"SeCRet123!";
+      extra-field: b:1;
+    out:
+      email: s:17:"email@address.com";
+      password: s:10:"SeCRet123!";
+# -----------------------------------------------------------------
+  - err:
+      - code: MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
-      psswrd:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-  Empty Form:
-    form: []
-    err:
-      email:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-      psswrd:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
-        txt: Mandatory value missing
-  Password input missing:
-    form:
+# -----------------------------------------------------------------
+  - mock:
+      email: s:7:"a@b.com";
+    out:
+      email: s:7:"a@b.com";
+    in:
       email: a@b.com
     err:
-      email: null
       psswrd:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        code: MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
-  Email input missing:
-    form:
+# -----------------------------------------------------------------
+  - mock:
+      psswrd: s:11:"PassWord12%";
+    out:
+      password: s:11:"PassWord12%";
+    in:
       psswrd: PassWord12%
     err:
-      psswrd: null
       email:
-        code: RHo\UI\Exception::MANDATORY_VALUE_MISSING
+        code: MANDATORY_VALUE_MISSING
         txt: Mandatory value missing
-  Wrong email:
-    form:
+# -----------------------------------------------------------------
+  - mock:
+      email: s:5:"email";
+      psswrd: s:11:"PassW0rd21%";
+    in:
       email: email
-      psswrd: PassWord12%
+      psswrd: PassW0rd21%
+    out:
+      email: s:5:"email";
+      password: s:11:"PassW0rd21%";      
     err:
-      psswrd: null
       email:
-        code: RHo\UI\Exception::VALIDATION_FAILED
+        code: VALIDATION_FAILED
         txt: Invalid e-mail address
-  Too short password:
-    form:
-      email: robert@my-email.com
-      psswrd: 12S!
+# -----------------------------------------------------------------
+  - mock:
+      email: s:19:"robert@my-email.com";
+      psswrd: s:4:"12S!";
     err:
-      email: null
       psswrd:
-        code: RHo\UI\Exception::STR_TOO_SHORT
-        txt: Length has to be greater than or equal to 5
-  Form with extra field:
-    form:
-      email: email@address.com
-      psswrd: Secret123!
-      extra-field: true
-    err:
-      email: null
-      psswrd: null
+        code: STR_TOO_SHORT
+        txt: String length too short. Min=5
+    out:
+      email: s:19:"robert@my-email.com";
+      password: s:4:"12S!";
+    in:
+      email: robert@my-email.com
+      psswrd: 12S!      

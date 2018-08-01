@@ -1,0 +1,6 @@
+email:
+  Email:
+    email: string
+psswrd:
+  Password:
+    password: string

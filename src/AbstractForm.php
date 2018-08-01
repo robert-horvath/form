@@ -2,24 +2,24 @@
 declare(strict_types = 1);
 namespace RHo\Form;
 
-use RHo\UI\Exception;
+use RHo\UIException\Exception;
 
 abstract class AbstractForm implements \JsonSerializable
 {
 
     /** @var array */
-    protected $in;
+    private $in;
 
     /** @var bool */
-    protected $valid;
+    private $valid;
 
     /** @var bool */
-    protected $extraFields;
+    private $unknownFields;
 
     public function __construct(array $ui, array $fields)
     {
         $this->valid = $this->validateFields($ui, $fields);
-        $this->extraFields = ! empty($ui);
+        $this->unknownFields = ! empty($ui);
     }
 
     private function popFieldFromUIArray(array &$ui, string $key)
@@ -36,16 +36,16 @@ abstract class AbstractForm implements \JsonSerializable
             try {
                 $this->in[$key] = $f($this->popFieldFromUIArray($ui, $key));
             } catch (Exception $e) {
-                $this->in[$key] = $e;
+                $this->in[$key] = new FormError($e->getCode(), $e->getMessage());
                 $valid = FALSE;
             }
         }
         return $valid;
     }
 
-    public function hasExtraFields(): bool
+    public function hasUnknownFields(): bool
     {
-        return $this->extraFields;
+        return $this->unknownFields;
     }
 
     public function isValid(): bool
@@ -53,19 +53,23 @@ abstract class AbstractForm implements \JsonSerializable
         return $this->valid;
     }
 
+    protected function in(string $key)
+    {
+        if (is_a($this->in[$key], FormError::class))
+            throw new \LogicException("Form field <$key> invalid.");
+        return $this->in[$key];
+    }
+
     public function jsonSerialize(): array
     {
         $json = [];
         foreach ($this->in as $k => $v)
-            $json[$k] = $this->getException($v);
+            $json[$k] = $this->getError($v);
         return $json;
     }
 
-    private function getException($e): ?array
+    private function getError($e): ?array
     {
-        return is_a($e, Exception::class) ? [
-            'code' => $e->getCode(),
-            'txt' => $e->getMessage()
-        ] : NULL;
+        return is_a($e, FormError::class) ? $e->toArray() : NULL;
     }
 }

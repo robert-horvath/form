@@ -1,0 +1,9 @@
+session:
+  AlphaNumToken(32):
+    sessionID: string
+authorization:
+  Authorization:
+    token:
+      token: string
+    createdAt:
+      dateTime: \DateTime

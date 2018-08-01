@@ -1,14 +1,11 @@
 <?php
 declare(strict_types = 1);
-namespace RHo\Form\NewUser;
+namespace RHoTest\Form\NewUser;
 
-use RHo\Form\AbstractTestCase;
+use RHoTest\Form\AbstractUnitTestCase;
 
-final class RegistrationTest extends AbstractTestCase
+final class RegistrationTest extends AbstractUnitTestCase
 {
 
-    protected function ymlFileName(): string
-    {
-        return 'new-user/registration.yml';
-    }
+    protected static $yamlFile = 'new-user/registration.yml';
 }

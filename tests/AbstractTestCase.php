@@ -1,49 +1,87 @@
 <?php
 declare(strict_types = 1);
-namespace RHo\Form;
+namespace RHoTest\Form;
 
 use PHPUnit\Framework\TestCase;
+use Mockery as m;
+use RHoTest;
+ini_set('xdebug.var_display_max_depth', '10');
 
 abstract class AbstractTestCase extends TestCase
 {
-    use YmlDataProviderTrait;
+
+    /** @var TestTemplate */
+    private $tt;
+
+    private function tmpl()
+    {
+        if ($this->tt === NULL)
+            $this->tt = TestTemplate::buildFromYaml(__DIR__ . '/data/' . static::$yamlFile);
+        return $this->tt;
+    }
+
+    public function formDataProvider()
+    {
+        return $this->tmpl()->iterator();
+    }
+
+    protected function tearDown()
+    {
+        m::close();
+    }
 
     /**
-     * @dataProvider validDataProvider
+     * @dataProvider formDataProvider
      */
-    public function testValidForm(array $in, array $err, array $out): void
+    public function testForms(array $in, array $out, array $err, array $mock, bool $isValid, bool $hasUnknownUI): void
     {
-        $form = new $this->className($in);
-        $this->evalExceptionConstants($err);
+        $className = $this->tmpl()->class();
+        if (is_subclass_of($this, RHoTest\Form\AbstractUnitTestCase::class))
+            $this->createMockeryMocks($mock, $err);
+        $form = new $className($in);
         
-        $this->assertTrue($form->isValid());
-        $this->assertJsonStringEqualsJsonString(json_encode($err), json_encode($form));
+        // var_dump($form->jsonSerialize());
         
-        foreach ($out as $f => $v) {
-            $ch = substr($v, 0, 1);
-            if ($ch === 'O')
-                $this->assertEquals(unserialize($v), $form->$f());
-            else
-                $this->assertSame(unserialize($v), $form->$f());
+        $this->assertEquals($err, $form->jsonSerialize(), "### Form errors don't match");
+        $this->assertJsonStringEqualsJsonString(json_encode($err), json_encode($form), "### JSON form errors don't match");
+        $this->assertSame($isValid, $form->isValid(), '### Invalid form');
+        $this->assertSame($hasUnknownUI, $form->hasUnknownFields(), '### Form has unknown fields');
+        
+        foreach ($this->tt->methods() as $func) {
+            $field = $this->tt->fieldOfMethod($func);
+            $value = $out[$func];
+            if ($err[$field] === NULL) {
+                if (is_object($value))
+                    $this->assertEquals($value, $form->$func(), '### Invalid form data objects');
+                else
+                    $this->assertSame($value, $form->$func(), '### Invalid form data');
+            } else
+                $this->checkFormException($form, $func, $field);
         }
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     */
-    public function testInvalidForm(array $in, array $err): void
+    private function checkFormException($form, $func, $field)
     {
-        $form = new $this->className($in);
-        $this->evalExceptionConstants($err);
-        
-        $this->assertFalse($form->isValid());
-        $this->assertJsonStringEqualsJsonString(json_encode($err), json_encode($form));
+        try {
+            $form->$func();
+        } catch (\LogicException $e) {
+            $this->assertSame("Form field <$field> invalid.", $e->getMessage());
+            $this->assertSame(0, $e->getCode());
+        }
     }
 
-    private function evalExceptionConstants(array &$err): void
+    private function createMockeryMocks(array $mock, array $err)
     {
-        foreach ($err as $k => &$v)
-            if ($v !== NULL)
-                $v['code'] = constant($v['code']);
+        foreach ($this->tt->fields() as $field) {
+            $externalMock = m::mock('overload:' . $this->tt->classOfField($field));
+            if ($err[$field] === NULL)
+                $externalMock->shouldReceive('mandatory')
+                    ->once()
+                    ->andReturn($mock[$field]);
+            else
+                $externalMock->shouldReceive('mandatory')
+                    ->once()
+                    ->andThrow(\RHo\UIException\Exception::class, $err[$field]['txt'], $err[$field]['code']);
+        }
     }
 }

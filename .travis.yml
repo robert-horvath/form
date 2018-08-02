@@ -1,11 +1,18 @@
 language: php
 
 php:
-  - '7.2'
+  - 7.2
+  - 7.2
+  
+env:
+  - RHOTEST=Unit
+  - RHOTEST=Integration
 
 before_install:
   - echo | pecl install channel://pecl.php.net/yaml-2.0.0
-  - travis_retry composer install --no-interaction --prefer-source
+  - if [[ "$RHOTEST" == "Unit" ]]; then travis_retry composer install --no-interaction --prefer-source; fi
+  - if [[ "$RHOTEST" == "Integration" ]]; then travis_retry composer install --no-dev --no-interaction --prefer-source; fi
+  - cat vendor/composer/autoload_psr4.php
   - travis_retry composer dump-autoload
   - cat vendor/composer/autoload_psr4.php
 

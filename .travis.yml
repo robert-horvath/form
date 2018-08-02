@@ -9,7 +9,7 @@ env:
 
 before_install:
   - echo | pecl install channel://pecl.php.net/yaml-2.0.0
-  - if [[ "$RHOTEST" == "unit" ]]; then travis_retry make de-env; fi
+  - if [[ "$RHOTEST" == "unit" ]]; then travis_retry make dev-env; fi
   - if [[ "$RHOTEST" == "integration" ]]; then travis_retry make no-dev-env; fi
   - travis_retry composer dump-autoload # Dumps autoload-dev too 
   - cat vendor/composer/autoload_psr4.php

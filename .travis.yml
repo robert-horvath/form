@@ -9,8 +9,8 @@ env:
 
 before_install:
   - echo | pecl install channel://pecl.php.net/yaml-2.0.0
-  - travis_retry composer install --no-dev --no-interaction --prefer-source
-  - if [[ "$RHOTEST" == "unit" ]]; then travis_retry composer require --dev mockery/mockery ^1.1 --update-no-dev; fi
+  - if [[ "$RHOTEST" == "unit" ]]; then travis_retry composer install --no-interaction --prefer-source; fi
+  - if [[ "$RHOTEST" == "integration" ]]; then travis_retry composer install --no-dev --no-interaction --prefer-source; fi
   - travis_retry composer dump-autoload # Dumps autoload-dev too 
   - cat vendor/composer/autoload_psr4.php
 

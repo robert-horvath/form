@@ -13,7 +13,7 @@ before_install:
   - if [[ "$RHOTEST" == "integration" ]]; then travis_retry composer install --no-dev --no-interaction --prefer-source; fi
   - travis_retry composer dump-autoload # Dumps autoload-dev too 
   - cat vendor/composer/autoload_psr4.php
-  - find . -name phpunit -type f
+  - find / -name phpunit -type f
 
 before_script:
   - make build

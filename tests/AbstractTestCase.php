@@ -5,7 +5,6 @@ namespace RHoTest\Form;
 ini_set('xdebug.var_display_max_depth', '10');
 
 use PHPUnit\Framework\TestCase;
-use Mockery as m;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -25,12 +24,10 @@ abstract class AbstractTestCase extends TestCase
         return $this->tmpl()->iterator();
     }
 
-    protected function setUp()
-    {}
-
     protected function tearDown()
     {
-        m::close();
+        if ($this->isUnitTesting())
+            \Mockery::close();
     }
 
     /**
@@ -39,10 +36,7 @@ abstract class AbstractTestCase extends TestCase
     public function testForms(array $in, array $out, array $err, array $mock, bool $isValid, bool $hasUnknownUI): void
     {
         $className = $this->tmpl()->class();
-        if (count(array_intersect([
-            '--testsuite',
-            'Unit'
-        ], $_SERVER['argv'])) == 2)
+        if ($this->isUnitTesting())
             $this->createMockeryMocks($mock, $err);
         $form = new $className($in);
         
@@ -78,7 +72,7 @@ abstract class AbstractTestCase extends TestCase
     private function createMockeryMocks(array $mock, array $err)
     {
         foreach ($this->tmpl()->fields() as $field) {
-            $externalMock = m::mock('overload:' . $this->tmpl()->classOfField($field));
+            $externalMock = \Mockery::mock('overload:' . $this->tmpl()->classOfField($field));
             if ($err[$field] === NULL)
                 $externalMock->shouldReceive('mandatory')
                     ->once()
@@ -88,5 +82,13 @@ abstract class AbstractTestCase extends TestCase
                     ->once()
                     ->andThrow(\RHo\UIException\Exception::class, $err[$field]['txt'], $err[$field]['code']);
         }
+    }
+
+    private function isUnitTesting(): bool
+    {
+        return (count(array_intersect([
+            '--testsuite',
+            'Unit'
+        ], $_SERVER['argv'])) == 2);
     }
 }

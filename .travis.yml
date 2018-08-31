@@ -14,9 +14,6 @@ before_install:
   - travis_retry composer dump-autoload # Dumps autoload-dev too 
   - cat vendor/composer/autoload_psr4.php
 
-before_script:
-  - make build
-
 script:
   - make "$RHOTEST"-test
 

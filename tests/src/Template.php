@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace RHoTest\Form;
+namespace RHo\FormTest;
 
 class Template
 {

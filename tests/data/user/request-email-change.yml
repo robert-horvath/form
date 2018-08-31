@@ -1,0 +1,28 @@
+form: 
+  User\Email\RequestChange:
+    new_email:
+      Email:
+        - newEmail
+    userid:
+      AlphaNumToken:
+        - userID
+    authorization:
+      Authorization:
+        - token
+        - dateTime
+# =================================================================
+examples:
+  - mock:
+      new_email: s:17:"email@address.com";
+      userid: s:32:"IoL812cqvNOEQh3979vmLfLBQsgh8j2T";
+      authorization: O:8:"stdClass":2:{s:5:"token";s:64:"CzGukmQlgEWbXWxSsEgZhgNxEbucdFvggKqTxKysyVEWQXdluMurXrxTEsyRtUeT";s:8:"dateTime";O:8:"DateTime":3:{s:4:"date";s:26:"2011-11-12 01:02:03.000004";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"UTC";}}
+    out:
+      newEmail: s:17:"email@address.com";
+      userID: s:32:"IoL812cqvNOEQh3979vmLfLBQsgh8j2T";
+      token: s:64:"CzGukmQlgEWbXWxSsEgZhgNxEbucdFvggKqTxKysyVEWQXdluMurXrxTEsyRtUeT";
+      dateTime: O:8:"DateTime":3:{s:4:"date";s:26:"2011-11-12 01:02:03.000004";s:13:"timezone_type";i:2;s:8:"timezone";s:3:"UTC";}      
+    in:
+      new_email: email@address.com
+      userid: IoL812cqvNOEQh3979vmLfLBQsgh8j2T
+      authorization: Bearer CzGukmQlgEWbXWxSsEgZhgNxEbucdFvggKqTxKysyVEWQXdluMurXrxTEsyRtUeT~Sat.12-Nov-2011_01/02/03.000004_UTC
+# -----------------------------------------------------------------      

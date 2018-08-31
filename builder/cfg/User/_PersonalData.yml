@@ -1,0 +1,6 @@
+firstname:
+  ?Name:
+    firstName: ?string
+eula:
+  ?SemVer:
+    eulaVersion: ?string

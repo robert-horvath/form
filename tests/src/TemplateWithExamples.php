@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace RHoTest\Form;
+namespace RHo\FormTest;
 
 /**
  * The class reads the yaml configuration file to provide example 

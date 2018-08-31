@@ -3,8 +3,9 @@ declare(strict_types = 1);
 namespace RHo\Form;
 
 use RHo\UIException\Exception;
+use JsonSerializable;
 
-abstract class AbstractForm implements \JsonSerializable
+abstract class AbstractForm implements JsonSerializable, FormInterface
 {
 
     /** @var array */

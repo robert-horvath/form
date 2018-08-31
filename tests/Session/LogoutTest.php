@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace RHo\Form\Session;
 
-use RHoTest\Form\AbstractTestCase;
+use RHo\FormTest\AbstractTestCase;
 
 final class LogoutTest extends AbstractTestCase
 {

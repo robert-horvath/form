@@ -1,8 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace RHoTest\Form\NewUser;
+namespace RHo\FormTest\NewUser;
 
-use RHoTest\Form\AbstractTestCase;
+use RHo\FormTest\AbstractTestCase;
 
 final class ActivationTest extends AbstractTestCase
 {

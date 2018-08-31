@@ -1,8 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace RHoTest\Form\Session;
+namespace RHo\FormTest\Session;
 
-use RHoTest\Form\AbstractTestCase;
+use RHo\FormTest\AbstractTestCase;
 
 final class LoginTest extends AbstractTestCase
 {

@@ -1,9 +1,0 @@
-userid:
-  AlphaNumToken(32):
-    userID: string
-authorization:
-  Authorization:
-    token:
-      token: string
-    dateTime:
-      dateTime: \DateTime
